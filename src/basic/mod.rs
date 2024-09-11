@@ -5,6 +5,11 @@ use crossbeam_queue::{ArrayQueue, SegQueue};
 
 use crate::*;
 
+mod local;
+pub use self::local::{
+    Mpmc as LocalMpmc, MpmcReceiver as LocalMpmcReceiver, MpmcSender as LocalMpmcSender,
+};
+
 #[derive(Debug)]
 #[allow(clippy::large_enum_variant)]
 enum Queue<T> {
@@ -143,7 +148,7 @@ impl<T> Channel for Mpmc<T> {
     type Receiver = MpmcReceiver<T>;
 }
 
-impl<T> UnboundedChannel for Mpmc<T> {
+impl<T> Unbounded for Mpmc<T> {
     fn unbounded() -> Pair<Self> {
         let channel = Arc::new(Mpmc {
             queue: Queue::Unbounded(SegQueue::new()),
@@ -154,7 +159,7 @@ impl<T> UnboundedChannel for Mpmc<T> {
     }
 }
 
-impl<T> BoundedChannel for Mpmc<T> {
+impl<T> Bounded for Mpmc<T> {
     fn bounded(capacity: usize) -> Pair<Self> {
         let channel = Arc::new(Mpmc {
             queue: Queue::Bounded(ArrayQueue::new(capacity)),
@@ -168,7 +173,7 @@ impl<T> BoundedChannel for Mpmc<T> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{Receiver, Sender, UnboundedChannel};
+    use crate::{Receiver, Sender, Unbounded};
 
     #[test]
     fn test_channel() {

@@ -60,13 +60,13 @@ impl<T> Channel for Crossbeam<T> {
     type Receiver = crossbeam_channel::Receiver<T>;
 }
 
-impl<T> UnboundedChannel for Crossbeam<T> {
+impl<T> Unbounded for Crossbeam<T> {
     fn unbounded() -> (Self::Sender, Self::Receiver) {
         crossbeam_channel::unbounded()
     }
 }
 
-impl<T> BoundedChannel for Crossbeam<T> {
+impl<T> Bounded for Crossbeam<T> {
     fn bounded(capacity: usize) -> (Self::Sender, Self::Receiver) {
         crossbeam_channel::bounded(capacity)
     }

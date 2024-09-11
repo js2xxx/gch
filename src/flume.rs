@@ -69,13 +69,13 @@ impl<T> Channel for Flume<T> {
     type Receiver = ::flume::Receiver<T>;
 }
 
-impl<T> BoundedChannel for Flume<T> {
+impl<T> Bounded for Flume<T> {
     fn bounded(capacity: usize) -> Pair<Self> {
         ::flume::bounded(capacity)
     }
 }
 
-impl<T> UnboundedChannel for Flume<T> {
+impl<T> Unbounded for Flume<T> {
     fn unbounded() -> Pair<Self> {
         ::flume::unbounded()
     }

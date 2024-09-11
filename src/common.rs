@@ -74,10 +74,10 @@ pub trait Channel {
 
 pub type Pair<C> = (<C as Channel>::Sender, <C as Channel>::Receiver);
 
-pub trait BoundedChannel: Channel {
+pub trait Bounded: Channel {
     fn bounded(capacity: usize) -> Pair<Self>;
 }
 
-pub trait UnboundedChannel: Channel {
+pub trait Unbounded: Channel {
     fn unbounded() -> Pair<Self>;
 }
